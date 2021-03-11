@@ -57,13 +57,13 @@
 
 //
 // Limit Switches
-//
+// TODO: Sanity check
 #define X_MIN_PIN                             12
 #define X_MAX_PIN                             24
 #define Y_MIN_PIN                             11
-#define Y_MAX_PIN                             23
+#define Y_MAX_PIN                             81
 #define Z_MIN_PIN                             10
-#define Z_MAX_PIN                             30
+#define Z_MAX_PIN                             81
 
 //
 // Z Probe (when not Z_MIN_PIN)
@@ -72,6 +72,10 @@
   #define Z_MIN_PROBE_PIN                     30
 #endif
 
+#define FIL_RUNOUT_PIN     77	 //77 EXT2 pin19 PJ6
+#define FIL_RUNOUT2_PIN    76	 //76 EXT2 pin17 PJ5
+
+
 #ifndef FIL_RUNOUT_PIN
   #define FIL_RUNOUT_PIN                       5
 #endif
@@ -79,13 +83,16 @@
 //
 // Steppers
 //
-#define X_STEP_PIN                            37
-#define X_DIR_PIN                             48
-#define X_ENABLE_PIN                          29
+#define X_STEP_PIN                            32
+#define X_DIR_PIN                             44
+#define X_ENABLE_PIN                          22
+#define X2_STEP_PIN        73   //PIN EXT2 pin 11 PJ3
+#define X2_DIR_PIN         72   //PIN EXT2 pin 9 PJ2
+#define X2_ENABLE_PIN      28   //zusamenn mit Y1 Enable
 
-#define Y_STEP_PIN                            36
-#define Y_DIR_PIN                             49
-#define Y_ENABLE_PIN                          28
+#define Y_STEP_PIN                            31
+#define Y_DIR_PIN                             45
+#define Y_ENABLE_PIN                          23
 
 #define Z_STEP_PIN                            35
 #define Z_DIR_PIN                             47
@@ -113,8 +120,9 @@
 
 #define DIGIPOTSS_PIN                         38
 #define DIGIPOT_CHANNELS  { 4,5,3,0,1 }           // X Y Z E0 E1 digipot channels to stepper driver mapping
+#define DIGIPOT_AXIS {3,4,9,2,0,1}																				
 #ifndef DIGIPOT_MOTOR_CURRENT
-  #define DIGIPOT_MOTOR_CURRENT { 135,135,135,135,135 }   // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
+  #define DIGIPOT_MOTOR_CURRENT { 230,210,180,180,180 }  // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
 #endif
 
 //
@@ -123,6 +131,7 @@
 #define TEMP_0_PIN                             0  // Analog Input
 #define TEMP_1_PIN                             1  // Analog Input
 #define TEMP_BED_PIN                           2  // Analog Input
+#define TEMP_CHAMBER_PIN    7	// Analog Input
 
 //
 // Heaters / Fans
@@ -146,7 +155,7 @@
 #define PS_ON_PIN                              4
 
 #ifndef CASE_LIGHT_PIN
-  #define CASE_LIGHT_PIN                      46
+  #define CASE_LIGHT_PIN                      81
 #endif
 
 #ifndef FILWIDTH_PIN
