@@ -347,9 +347,13 @@ void enable_e_steppers() {
 }
 
 void enable_all_steppers() {
+  SERIAL_ECHOLNPAIR("Enable all steppers");
   TERN_(AUTO_POWER_CONTROL, powerManager.power_on());
   ENABLE_AXIS_X();
   ENABLE_AXIS_Y();
+  //CHANGE: EVO-tech
+  DISABLE_BRAKE_Z();
+  //
   ENABLE_AXIS_Z();
   enable_e_steppers();
 }
@@ -367,8 +371,13 @@ void disable_e_stepper(const uint8_t e) {
 }
 
 void disable_all_steppers() {
+  SERIAL_ECHOLNPAIR("Disable all steppers");
   DISABLE_AXIS_X();
   DISABLE_AXIS_Y();
+  //CHANGE: EVO-tech
+  ENABLE_BRAKE_Z();
+  gcode.dwell(500);
+  //
   DISABLE_AXIS_Z();
   disable_e_steppers();
 }
@@ -1288,7 +1297,14 @@ void setup() {
     SETUP_RUN(password.lock_machine());      // Will not proceed until correct password provided
   #endif
 
+  // CHANGE: EVO-tech
+  SET_OUTPUT(Z_BRAKE_PIN);
+  //
+
+
   marlin_state = MF_RUNNING;
+
+
 
   SETUP_LOG("setup() completed.");
 }

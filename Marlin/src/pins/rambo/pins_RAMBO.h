@@ -192,6 +192,8 @@
 //
 // LCD / Controller
 //
+#undef HAS_WIRED_LCD
+#undef TOUCH_UI_ULTIPANEL
 #if HAS_WIRED_LCD || TOUCH_UI_ULTIPANEL
 
   #define KILL_PIN                            80
@@ -215,7 +217,7 @@
       #define DOGLCD_CS                       71
       #define LCD_SCREEN_ROT_180
 
-      #define BTN_EN1                         85
+      //#define BTN_EN1                         85
       #define BTN_EN2                         84
       #define BTN_ENC                         83
 
