@@ -672,6 +672,15 @@ void reset_stepper_drivers();    // Called by settings.load / settings.reset
   #endif
 #endif
 
+// CHANGE: EVO-tech
+
+#ifdef HAS_Z_BRAKE
+  #define ENABLE_BRAKE_Z() WRITE(Z_BRAKE_PIN, LOW)
+  #define DISABLE_BRAKE_Z() WRITE(Z_BRAKE_PIN, HIGH)
+#endif
+
+//
+
 #ifndef ENABLE_STEPPER_Z2
   #if HAS_Z2_ENABLE
     #define  ENABLE_STEPPER_Z2() Z2_ENABLE_WRITE( Z_ENABLE_ON)
@@ -848,14 +857,16 @@ void reset_stepper_drivers();    // Called by settings.load / settings.reset
 #define  ENABLE_AXIS_Y() do{ ENABLE_STEPPER_Y(); ENABLE_STEPPER_Y2(); }while(0)
 #define DISABLE_AXIS_Y() do{ DISABLE_STEPPER_Y(); DISABLE_STEPPER_Y2(); FORGET_AXIS(Y_AXIS); }while(0)
 
-#define  ENABLE_AXIS_Z() do{ ENABLE_STEPPER_Z();  ENABLE_STEPPER_Z2();  ENABLE_STEPPER_Z3();  ENABLE_STEPPER_Z4(); }while(0)
+#define  ENABLE_AXIS_Z() do{SERIAL_ECHOLNPAIR("ENABLE Z"); ENABLE_STEPPER_Z();  ENABLE_STEPPER_Z2();  ENABLE_STEPPER_Z3();  ENABLE_STEPPER_Z4(); DISABLE_BRAKE_Z();}while(0)
 
 #ifdef Z_AFTER_DEACTIVATE
   #define Z_RESET() do{ current_position.z = Z_AFTER_DEACTIVATE; sync_plan_position(); }while(0)
 #else
   #define Z_RESET()
 #endif
-#define DISABLE_AXIS_Z() do{ DISABLE_STEPPER_Z(); DISABLE_STEPPER_Z2(); DISABLE_STEPPER_Z3(); DISABLE_STEPPER_Z4(); FORGET_AXIS(Z_AXIS); Z_RESET(); }while(0)
+
+// CHANGE: EVO-tech
+#define DISABLE_AXIS_Z() do{SERIAL_ECHOLNPAIR("DISABLE Z"); ENABLE_BRAKE_Z(); DISABLE_STEPPER_Z(); DISABLE_STEPPER_Z2(); DISABLE_STEPPER_Z3(); DISABLE_STEPPER_Z4(); FORGET_AXIS(Z_AXIS); Z_RESET(); }while(0)
 
 //
 // Extruder steppers enable / disable macros
